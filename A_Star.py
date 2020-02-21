@@ -9,8 +9,12 @@
 @time: 2020/2/17 14:00
 """
 # ---------------------------------------------------------------------------------- 
+# Realizing A* alogrithm
 #  实现A* 算法
+# Dynamically showing the process by the use of matplotlib
 # 利用matplotlib动态展现出来
+# A lot of ways to make it, and here I firstly save all states as photos, then compound them to a GIF.
+# However this way causes the GIF file too big to up load. I show you several photos.
 # ----------------------------------------------------------------------------------
 import math
 import time
@@ -19,18 +23,19 @@ import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 from matplotlib.patches import Rectangle
-# import matplotlib.cm as cm
-# from Queues import  ArrayQueue as AQ
+# import matplotlib.cm as cm # For that you can change the color map with your own mind
 # ----------------------------------------------------------------------------------
 class Point():
+    # 创建对象为point的类
+    # Creat a class aimed to point
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.pre = -1
-        self.cost = 0
+        self.pre = -1 # Help us build the path to the end point
+        self.cost = 0 # Help us find the lower_cost way to the end point
 
     def Compute_Cost(self):
-        self.cost = BaseCost(self.x, self.y) + HeuristicCost(self.x, self.y)
+        self.cost = BaseCost(self.x, self.y) + HeuristicCost(self.x, self.y)# you can change the function computing the cost to get different result.
         return self.cost
 
 class Map():
@@ -46,13 +51,15 @@ class Map():
         return Obs[x, y] == 1
 
     def GenarateObstacle(self):
+        # Generate a Obstacle randomly
+        # Also, you can produce a maze by other alogrithms such as Prim alogrithm
         Obstacle = np.zeros((self.L, self.W))
-        rand = np.round(np.random.rand(4,2)*49)# numpy.float64无法进行索引
+        rand = np.round(np.random.rand(4,2)*49)# numpy.float64 is not a iterable object, which means you have to transfer
 
         for ii in range(4):
-            chosen = round(np.random.rand())
+            chosen = round(np.random.rand())# chosen = 0 or 1
             if ii < 3:
-                node = [rand[ii+chosen, 0], rand[ii+(chosen==0)*1, 1]]
+                node = [rand[ii+chosen, 0], rand[ii+(chosen==0)*1, 1]]# Choosing a point randomly
                 print(node)
                 Obstacle[
                 int(node[0]),
@@ -65,7 +72,7 @@ class Map():
         for row in range(self.L):
             for col in range(self.W):
                 if Obstacle[row, col] == 1:
-                    rec = Rectangle((row, col), width=1, height=1, color='gray')
+                    rec = Rectangle((row, col), width=1, height=1, color='gray') # Draw a rectangle, and put its postion in axes.
                     ax.add_patch(rec)
                 if Obstacle[row, col] == 0:
                     rec = Rectangle((row, col), width=1, height=1, edgecolor='gray', facecolor='w')
@@ -191,6 +198,7 @@ class a_star():
                 # data.to_excel(file)
                 # file.save()
                 # file.close()
+                
                 end_time = time.time()
                 print('===== Algorithm finish in', int(end_time-start_time), ' seconds')
                 return True
