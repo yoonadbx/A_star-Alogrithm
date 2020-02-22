@@ -12,3 +12,7 @@
 # 3）不允许在类外直接修改枚举项的值。
 # 4）不存在 key 相同的枚举项（类变量）。
 # 5）枚举可以相同的值，但是值相同的各项 Key 都会当做别名。
+# 3. Type Error "Numpy.float64 object is not a iterable "
+# 意味着需要将 np.float64->int, 而np.round（）和XX.astype（）生成np.int类型，这同样也会报错。
+# 正确做法应该用 int()循环整个矩阵。
+# 4. 一定要注意局部变量和全局变量以及类内变量不要重命！！！
